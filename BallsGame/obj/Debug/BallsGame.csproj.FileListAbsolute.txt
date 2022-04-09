@@ -1,0 +1,10 @@
+C:\Users\kali_\Desktop\BallsGame\BallsGame\bin\Debug\BallsGame.exe.config
+C:\Users\kali_\Desktop\BallsGame\BallsGame\bin\Debug\BallsGame.exe
+C:\Users\kali_\Desktop\BallsGame\BallsGame\bin\Debug\BallsGame.pdb
+C:\Users\kali_\Desktop\BallsGame\BallsGame\obj\Debug\BallsGame.csprojAssemblyReference.cache
+C:\Users\kali_\Desktop\BallsGame\BallsGame\obj\Debug\BallsGame.Form1.resources
+C:\Users\kali_\Desktop\BallsGame\BallsGame\obj\Debug\BallsGame.Properties.Resources.resources
+C:\Users\kali_\Desktop\BallsGame\BallsGame\obj\Debug\BallsGame.csproj.GenerateResource.cache
+C:\Users\kali_\Desktop\BallsGame\BallsGame\obj\Debug\BallsGame.csproj.CoreCompileInputs.cache
+C:\Users\kali_\Desktop\BallsGame\BallsGame\obj\Debug\BallsGame.exe
+C:\Users\kali_\Desktop\BallsGame\BallsGame\obj\Debug\BallsGame.pdb
