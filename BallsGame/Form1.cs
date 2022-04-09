@@ -17,6 +17,11 @@ namespace BallsGame
         static string[,] positions = new string[5, 6];
         static int extraRowPosition = 2;
 
+        static bool paused = false;
+        static int time = 0;
+
+        static int moves = 0;
+
         public Form1()
         {
             InitializeComponent();
@@ -25,6 +30,19 @@ namespace BallsGame
         private void ShuffleButtons()
         {
             avaliableColors.Clear();
+            positions = new string[5, 6];
+            extraRowPosition = 2;
+            positions[0, 5] = "E";
+            positions[1, 5] = "E";
+            positions[2, 5] = "E";
+            positions[3, 5] = "E";
+            positions[4, 5] = "E";
+            gameTimer.Start();
+            time = 0;
+            moves = 0;
+            movesLabel.Text = "Moves: 0";
+            timeLabel.Text = "00:00";
+
             for (int i = 0; i < 5; i++)
             {
                 for (int k = 0; k < 5; k++)
@@ -67,22 +85,22 @@ namespace BallsGame
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.MaximumSize = new Size(390, 430);
+            startPanel.Location = new Point((this.Width - startPanel.Width) / 2, (this.Height - startPanel.Height) / 2);
+            endPanel.Location = new Point((this.Width - endPanel.Width) / 2, (this.Height - endPanel.Height) / 2);
             row0left.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
             row1left.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
             row2left.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
             row3left.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
             row4left.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
             extraRowLeft.Image.RotateFlip(RotateFlipType.Rotate180FlipNone);
-            positions[0, 5] = "E";
-            positions[1, 5] = "E";
-            positions[2, 5] = "E";
-            positions[3, 5] = "E";
-            positions[4, 5] = "E";
             ShuffleButtons();
         }
 
         private void Rowleft_Click(object sender, EventArgs e)
         {
+            if (paused) return;
+
             Button btn = sender as Button;
             int row = int.Parse(btn.Name[3].ToString());
             string temp = positions[0, row];
@@ -98,9 +116,11 @@ namespace BallsGame
             positions[4, row] = temp;
             Button lastButton = mainPanel.Controls["btn" + 4 + row] as Button;
             lastButton.Image = imagePath;
+            UpdateMoves();
         }
         private void Rowright_Click(object sender, EventArgs e)
         {
+            if (paused) return;
             Button btn = sender as Button;
             int row = int.Parse(btn.Name[3].ToString());
             string temp = positions[4, row];
@@ -116,10 +136,12 @@ namespace BallsGame
             positions[0, row] = temp;
             Button lastButton = mainPanel.Controls["btn" + 0 + row] as Button;
             lastButton.Image = imagePath;
+            UpdateMoves();
         }
 
         private void ExtraRowLeft_Click(object sender, EventArgs e)
         {
+            if (paused) return;
             if (extraRowPosition < 1) return;
             btnExtra.Left -= 50;
             if (positions[extraRowPosition, 5] != "E")
@@ -128,10 +150,12 @@ namespace BallsGame
                 positions[extraRowPosition, 5] = "E";
             }
             extraRowPosition -= 1;
+            UpdateMoves();
         }
 
         private void ExtraRowRight_Click(object sender, EventArgs e)
         {
+            if (paused) return;
             if (extraRowPosition > 3) return;
             btnExtra.Left += 50;
             if (positions[extraRowPosition, 5] != "E")
@@ -141,10 +165,12 @@ namespace BallsGame
                 positions[extraRowPosition, 5] = "E";
             }
             extraRowPosition += 1;
+            UpdateMoves();
         }
 
         private void MoveBallVertically(object sender, EventArgs e)
         {
+            if (paused) return;
             Button button = sender as Button;
             int column;
             int row;
@@ -193,9 +219,25 @@ namespace BallsGame
                     if (checkForVictory())
                     {
                         //Victory
-                        MessageBox.Show("Victory");
+                        endMoves.Text = $"Moves: {moves}";
+
+                        TimeSpan timerTime = TimeSpan.FromSeconds(time);
+                        if (time < 3600)
+                            endTime.Text = string.Format("{0:D2}:{1:D2}", timerTime.Minutes, timerTime.Seconds);
+                        else
+                            endTime.Text = string.Format("{0:D2}:{1:D2}:{2:D2}", timerTime.Hours, timerTime.Minutes, timerTime.Seconds);
+
+                        int score = ((1000 / time) + (1000 / moves)) * 25/10;
+                        endScore.Text = $"Score: {score}";
+
+                        endPanel.Visible = true;
+                        mainPanel.Visible = false;
+                        gameTimer.Stop();
                     }
-                }                
+
+                    UpdateMoves();
+                    return;
+                }
             }
 
             //Try moving down
@@ -233,6 +275,9 @@ namespace BallsGame
                     }
                     button.Image = null;
                     positions[column, row] = "E";
+
+                    UpdateMoves();
+                    return;
                 }
             }
         }
@@ -251,6 +296,56 @@ namespace BallsGame
                 }
             }
             return true;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void startBtn_Click(object sender, EventArgs e)
+        {
+            startPanel.Visible = false;
+            ShuffleButtons();
+            mainPanel.Visible = true;
+        }
+
+        private void pauseBtn_Click(object sender, EventArgs e)
+        {
+            paused = !paused;
+            if (paused)
+            {
+                pauseBtn.Image = Properties.Resources.PlayButton;
+                gameTimer.Enabled = false;
+                pausedLabel.Visible = true;
+            }
+            else
+            {
+                pauseBtn.Image = Properties.Resources.PauseButton;
+                gameTimer.Enabled = true;
+                pausedLabel.Visible = false;
+            }
+        }
+
+        private void gameTimer_Tick(object sender, EventArgs e)
+        {
+            time += 1;
+            TimeSpan timerTime = TimeSpan.FromSeconds(time);
+            if (time < 3600)
+                timeLabel.Text = string.Format("{0:D2}:{1:D2}", timerTime.Minutes, timerTime.Seconds);
+            else
+                timeLabel.Text = string.Format("{0:D2}:{1:D2}:{2:D2}", timerTime.Hours, timerTime.Minutes, timerTime.Seconds);
+        }
+
+        private void UpdateMoves()
+        {
+            movesLabel.Text = $"Moves: {++moves}";
+        }
+
+        private void continueBtn_Click(object sender, EventArgs e)
+        {
+            endPanel.Visible = false;
+            startPanel.Visible = true;
         }
     }
 }

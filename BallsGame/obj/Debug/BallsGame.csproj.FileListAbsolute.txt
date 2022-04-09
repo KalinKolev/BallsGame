@@ -8,3 +8,13 @@ C:\Users\kali_\Desktop\BallsGame\BallsGame\obj\Debug\BallsGame.csproj.GenerateRe
 C:\Users\kali_\Desktop\BallsGame\BallsGame\obj\Debug\BallsGame.csproj.CoreCompileInputs.cache
 C:\Users\kali_\Desktop\BallsGame\BallsGame\obj\Debug\BallsGame.exe
 C:\Users\kali_\Desktop\BallsGame\BallsGame\obj\Debug\BallsGame.pdb
+D:\BallsGame\BallsGame\BallsGame\bin\Debug\BallsGame.exe.config
+D:\BallsGame\BallsGame\BallsGame\bin\Debug\BallsGame.exe
+D:\BallsGame\BallsGame\BallsGame\bin\Debug\BallsGame.pdb
+D:\BallsGame\BallsGame\BallsGame\obj\Debug\BallsGame.csprojAssemblyReference.cache
+D:\BallsGame\BallsGame\BallsGame\obj\Debug\BallsGame.Form1.resources
+D:\BallsGame\BallsGame\BallsGame\obj\Debug\BallsGame.Properties.Resources.resources
+D:\BallsGame\BallsGame\BallsGame\obj\Debug\BallsGame.csproj.GenerateResource.cache
+D:\BallsGame\BallsGame\BallsGame\obj\Debug\BallsGame.csproj.CoreCompileInputs.cache
+D:\BallsGame\BallsGame\BallsGame\obj\Debug\BallsGame.exe
+D:\BallsGame\BallsGame\BallsGame\obj\Debug\BallsGame.pdb
